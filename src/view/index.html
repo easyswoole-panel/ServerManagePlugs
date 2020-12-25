@@ -1,0 +1,67 @@
+<div class="layui-fluid" id="VIEW-apply" lay-title="server服务管理">
+    <div class="layui-btn layui-btn-sm stop-server">stop</div>
+    <div class="layui-btn layui-btn-sm reload-server">reload</div>
+    <div class="layui-btn layui-btn-sm restart-server">restart</div>
+</div>
+
+<script>
+    var tick_id = null;
+    var check_times = 0;
+
+    layui.use(['admin','jquery'], function(admin,  form) {
+        var $ = layui.jquery
+        $(".stop-server").on("click", function(){
+            admin.post({
+                url:"/server-manage/stop",
+                success:function(res){
+                },
+                fail:function(){
+                    layer.msg("ok, server stop success")
+                }
+            })
+        })
+        $(".reload-server").on("click", function(){
+            admin.post({
+                url:"/server-manage/reload",
+                success:function(res){
+                    layer.msg("ok, server reload success")
+                },
+                fail:function(){
+                }
+            })
+        })
+        $(".restart-server").on("click", function(){
+            layer.load();
+            admin.post({
+                url:"/server-manage/restart",
+                success:function(){
+
+                },
+                error:function(err){
+                    // 服务会终止，所以走fail才是正常到
+                    // tick 定时查询状态 是否重启成功
+                    tick_id = setInterval(function(){
+                        admin.post({
+                            url:"/server-manage/check",
+                            success:function(){
+                                layer.closeAll();
+                                layer.msg("重启成功");
+                                clearInterval(tick_id);
+                            },
+                            error(){
+                                check_times++;
+                                if (check_times > 20){
+                                    layer.closeAll();
+                                    layer.msg("重启失败...");
+                                }
+                            }
+                        });
+                    }, 3 * 1000);
+                }
+            })
+        })
+    });
+
+</script>
+
+
