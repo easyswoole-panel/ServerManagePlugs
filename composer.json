@@ -1,7 +1,7 @@
 {
-    "name":"",
+    "name":"siam/server-manage-plugs",
     "type":"library",
-    "description":"EasySwoole Panel's Plugs",
+    "description":"EasySwoole Panel's Plugs,for server manage",
     "keywords":["easyswoole panel", "easyswoole plugs"],
     "homepage":"",
     "license":"Apache-2.0",
