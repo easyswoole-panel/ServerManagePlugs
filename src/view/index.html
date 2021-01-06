@@ -1,15 +1,66 @@
 <div class="layui-fluid" id="VIEW-apply" lay-title="server服务管理">
-    <div class="layui-btn layui-btn-sm stop-server">stop</div>
-    <div class="layui-btn layui-btn-sm reload-server">reload</div>
-    <div class="layui-btn layui-btn-sm restart-server">restart</div>
+    <!--<div class="layui-btn layui-btn-sm restart-server">restart</div>-->
+
+    <div class="layui-row layui-col-space15">
+        <div class="layui-col-lg4">
+            <div class="layui-card">
+                <div class="layui-card-header">服务信息</div>
+                <div class="layui-card-body" id="serverInfoBd">
+
+                </div>
+            </div>
+        </div>
+        <div class="layui-col-lg4">
+            <div class="layui-card">
+                <div class="layui-card-header">服务管理</div>
+                <div class="layui-card-body">
+                    <div class="layui-btn layui-btn-sm stop-server">stop</div>
+                    <div class="layui-btn layui-btn-sm reload-server">reload</div>
+                </div>
+            </div>
+        </div>
+    </div>
 </div>
 
 <script>
     var tick_id = null;
     var check_times = 0;
 
-    layui.use(['admin','jquery'], function(admin,  form) {
-        var $ = layui.jquery
+    layui.use(['admin','jquery','laytpl'], function(admin,  form) {
+        var $ = layui.jquery;
+        let laytpl = layui.laytpl;
+
+        loadInfo();
+
+        function loadInfo()
+        {
+            admin.post({
+                url:"/server-manage/get_info",
+                success:function(res){
+                    let tp = `
+                    <table class="layui-table">
+                        <colgroup>
+                            <col width="100" />
+                            <col />
+                        </colgroup>
+                        <tbody>
+                            {{# for(let key in d.obj){ }}
+                            <tr>
+                                <td>{{ key }}</td>
+                                <td>{{ d.obj[key] }}</td>
+                            </tr>
+                            {{#  } }}
+                        </tbody>
+                    </table>`;
+                    $("#serverInfoBd").html(laytpl(tp).render({
+                        obj: res.result.info
+                    }));
+                }
+            })
+        }
+
+
+
         $(".stop-server").on("click", function(){
             admin.post({
                 url:"/server-manage/stop",
@@ -19,7 +70,7 @@
                     layer.msg("ok, server stop success")
                 }
             })
-        })
+        });
         $(".reload-server").on("click", function(){
             admin.post({
                 url:"/server-manage/reload",
@@ -29,7 +80,7 @@
                 fail:function(){
                 }
             })
-        })
+        });
         $(".restart-server").on("click", function(){
             layer.load();
             admin.post({
@@ -53,6 +104,7 @@
                                 if (check_times > 20){
                                     layer.closeAll();
                                     layer.msg("重启失败...");
+                                    clearInterval(tick_id);
                                 }
                             }
                         });

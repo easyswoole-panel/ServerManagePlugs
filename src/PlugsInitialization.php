@@ -5,9 +5,9 @@
 
 use \Siam\ServerManagePlugs\controller\ServerManage;
 
-\Siam\Plugs\common\PlugsRouterHelper::getInstance()->addAnyRouter([
-    '/api/server-manage/stop' => [new ServerManage, 'stop'],
-    '/api/server-manage/reload' => [new ServerManage, 'reload'],
-    '/api/server-manage/restart' => [new ServerManage, 'restart'],
-    '/api/server-manage/check' => [new ServerManage, 'check'],
-]);
+//\Siam\Plugs\common\PlugsRouterHelper::getInstance()->addAnyRouter([
+//    '/api/server-manage/stop' => [new ServerManage, 'stop'],
+//    '/api/server-manage/reload' => [new ServerManage, 'reload'],
+//    '/api/server-manage/restart' => [new ServerManage, 'restart'],
+//    '/api/server-manage/check' => [new ServerManage, 'check'],
+//]);
