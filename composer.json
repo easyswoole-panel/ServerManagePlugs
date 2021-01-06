@@ -3,13 +3,15 @@
     "type":"library",
     "description":"EasySwoole Panel's Plugs,for server manage",
     "keywords":["easyswoole panel", "easyswoole plugs"],
-    "homepage":"",
+    "homepage":"https://www.siammm.cn/",
     "license":"Apache-2.0",
     "authors":[{
-        "name":"",
-        "email":""
+        "name": "Siam",
+        "email": "59419979@qq.com"
     }],
     "autoload":{
-    "psr-4":{}
-}
+        "psr-4":{
+            "Siam\\ServerManagerPlugs\\": "src/"
+        }
+    }
 }
